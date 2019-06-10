@@ -1,3 +1,4 @@
+import pysnooper
 import os
 import sys
 import urllib.request
@@ -26,7 +27,7 @@ def main(args):
 
 
 	archives = tl.get_archives(root_url, year)
-	archives = sorted(archives, key = lambda x: (int(x.split('/')[2]), int(x.split('/')[3])))
+
 
 
 	for x in archives:
@@ -50,14 +51,16 @@ def main(args):
 					print("Exception: ", e)
 					continue
 
-				print("found ", len(chapters), " articles!")
+				print("I found ", len(chapters), " articles!")
 				for x in range(0, len(chapters)):
 					exists = os.path.isfile(issue_path+"//ch"+str(x)+".pdf")
 					# not only path but also file size
 					if exists:
+						print("["+str(x+1)+"/"+str(len(chapters))+"] already exists!")
 						pass
 					else:
 						try:
+							print("Downloading ["+str(x+1)+"/"+str(len(chapters))+"] article")
 							urllib.request.urlretrieve(chapters[x], (issue_path+"//ch"+str(x)+".pdf"))
 						except IOError as e:
 							print("Error: ", e)

@@ -1,9 +1,8 @@
 import urllib.request
 import os
-
 import re
 from pdb import set_trace as bp
-
+import pysnooper
 class Tools(object):
 	def get_archives(root_url, from_year):
 		#print("Downloading from: ",root_url,"\n2019 -", from_year)
@@ -33,7 +32,7 @@ class Tools(object):
 					else:
 						pass
 			if(years):
-				#print("Going to:", years[0], "now.\n")
+				print("Going to:", years[0], "now.\n")
 				with urllib.request.urlopen(root_url+years[0]) as response:
 					page = response.read().decode('utf-8')
 				for match in re.finditer(r"/content/[0-9]+/[0-9]+", page):
@@ -41,6 +40,8 @@ class Tools(object):
 
 			else:
 				print("We're done!")
+				results = sorted(results, key = lambda x: (int(x.split('/')[2]), int(x.split('/')[3])))
+				print(results)
 				break;
 
 		return results
